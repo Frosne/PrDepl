@@ -48,19 +48,14 @@ def publish_queue(file_,path):
 
 	def callback(ch, method, properties, body):
 
-    		print(" [x] Received response from worker")
+    		print(" [x] Received response from worker:" + body)
 
 		import os;
 
 		file_ = open(path+'.backup','w');
 
-		import flock;
-
-		fcntl.flock(file_, fcntl.LOCK_EX | fcntl.LOCK_NB);
-
 		file_.write(body);
-
-		fcntl.flock(file_,fcntl.LOCK_UN);
+		file_.close();
 
 		from shutil import copyfile
 
@@ -69,6 +64,7 @@ def publish_queue(file_,path):
 		os.remove(path+'.backup');	
 
     		ch.basic_ack(delivery_tag = method.delivery_tag)
+		channel.stop_consuming();
 
 	channel.basic_consume(callback,  queue='result')
 
@@ -84,9 +80,7 @@ def publish():
 
 	mypath = "/home/anilam/scripts/"
 
-	while 1:	
-
-				
+	while 1:				
 
 		try:	
 
@@ -122,7 +116,8 @@ def publish():
 
 					port = 5672;
 
-					publish_queue(text, mypath + filescr+'.result');
+					publish_queue(text, filescr+'.result');
+					print('Execution finished');
 
 							
 
