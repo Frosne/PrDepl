@@ -1,18 +1,14 @@
-def publish_queue(file_,path):
+def publish_queue(file_,path, host, port):
 
 	print('File is put on the queue');
-
-	host = '10.0.0.1';	
-
-	port = 5672
-
 	import pika
 
 	import sys
 
-	#ssl_option = {'certfile': '/home/anilam/client/cert.pem', 'keyfile': '/home/anilam/client/key.pem'}
+	ssl_option = {'certfile': '/home/anilam/client/cert.pem', 'keyfile': '/home/anilam/client/key.pem'}
 
 	parameters = pika.ConnectionParameters(host=host, port=port);#
+	#parameters = pika.ConnectionParameters(host=host, port=port,ssl = t, ssl_options = ssl_option);
 
 	connection = pika.BlockingConnection(parameters)
 
@@ -110,13 +106,8 @@ def publish():
 
 					file_.close();
 
-					os.remove(filescr);							
-
-					host = '10.0.0.1';
-
-					port = 5672;
-
-					publish_queue(text, filescr+'.result');
+					os.remove(filescr);		
+					publish_queue(text, filescr+'.result','10.0.0.1',5672);
 					print('Execution finished');
 
 							

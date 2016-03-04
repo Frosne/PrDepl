@@ -18,4 +18,4 @@ def createUser(name, username, password):
 	print('useradd '+_username+' -p ' + encPass + ' -d ' + '/home/'+_username +'/'+ ' -m ');
 	return os.system('useradd '+_username+' -p ' + encPass + ' -d ' + '/home/'+_username +'/'+ ' -m ');
 
-createUser('dante', 'dante', '123');
+#createUser('dante', 'dante', '123');
